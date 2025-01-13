@@ -6,6 +6,7 @@ export default {
 
 <template>
 <nav class="navbar">
+  <img id="logo" src="../assets/logo.png">
     <div class="nav-container">
       <!-- Title -->
       <h1 class="app-title">LegatumLibri</h1>
@@ -21,6 +22,10 @@ export default {
 
 
 <style scoped>
+#logo {
+  width: 150px;
+}
+
 .navbar {
   position: fixed;
   top: 0;

@@ -13,8 +13,8 @@ export default {
 
       <!-- Navigation Links -->
       <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
+        <li><RouterLink to="/">Home</RouterLink></li>
+        <li><RouterLink to="/about">About</RouterLink></li>
       </ul>
     </div>
   </nav>

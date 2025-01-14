@@ -1,13 +1,9 @@
 <script>
-import AboutPage from './components/AboutPage.vue';
-import Home from './components/Home.vue';
 import NavBar from './components/NavBar.vue';
 
 export default {
   components: {
     NavBar,
-    Home,
-    AboutPage,
   }
 }
 </script>
@@ -17,9 +13,7 @@ export default {
     <NavBar></NavBar>
   </header>
   <main>
-    <div class="wrapper">
-      <Home></Home>
-    </div>
+    <router-view/>
   </main>
 </template>
 

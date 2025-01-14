@@ -22,15 +22,6 @@ export default {
         <li><strong>Favorites:</strong> Found a book you absolutely love? Add it to your favorites! This allows you to quickly access your beloved titles and see your go-to reads anytime you want.</li>
       </ul>
 
-      <h2>Intuitive CRUD Operations</h2>
-      <p>Our platform is designed to be user-friendly and dynamic. With <strong>LegatumLibri</strong>, you can:</p>
-      <ul>
-        <li><strong>Create</strong> a book card by simply entering the book title, selecting a genre, uploading an image, and adding a description (available once you're logged in).</li>
-        <li><strong>Read</strong> and view details about the books you’ve created or discovered.</li>
-        <li><strong>Update</strong> your collection by modifying book details whenever you like—whether it's updating the description, swapping images, or changing genres.</li>
-        <li><strong>Delete</strong> a book card from your collection if you no longer want to keep track of a specific book.</li>
-      </ul>
-
       <h2>Getting Started</h2>
       <p>Getting started with <strong>LegatumLibri</strong> is quick and easy:</p>
       <ul>

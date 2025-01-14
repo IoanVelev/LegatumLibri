@@ -86,9 +86,12 @@ section {
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             overflow: hidden;
+            width: calc((100% - 80px) / 3); /* Ensure 3 cards per row with gaps */
             transition: transform 0.2s, box-shadow 0.2s;
-            flex: 1 1 calc(100% - 40px);
-            max-width: 250px; 
+            max-width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -134,7 +137,7 @@ section {
                 padding-top: 80px;
             }
             .card {
-                flex: 1 1 100%;
+                flex: 1 1 100%; 
                 max-width: 150px;
             }
         }

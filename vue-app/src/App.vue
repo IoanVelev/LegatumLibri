@@ -1,4 +1,5 @@
 <script>
+import AboutPage from './components/AboutPage.vue';
 import Home from './components/Home.vue';
 import NavBar from './components/NavBar.vue';
 
@@ -6,6 +7,7 @@ export default {
   components: {
     NavBar,
     Home,
+    AboutPage,
   }
 }
 </script>

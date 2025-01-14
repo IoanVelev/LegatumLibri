@@ -36,11 +36,8 @@ export default {
       <p>Discover new books, manage your wishlist, and curate your favorites - all in one place. Start your adventure today and see where books can take you with <strong>LegatumLibri</strong>.</p>
 
       <div class="img-container">
-        <h2>Business Card Samples</h2>
-        <p>Here are some example business cards that you can use to showcase your favorite books:</p>
-        <img src="https://via.placeholder.com/300x180.png?text=Book+Title+1" alt="Business Card 1">
-        <img src="https://via.placeholder.com/300x180.png?text=Book+Title+2" alt="Business Card 2">
-        <img src="https://via.placeholder.com/300x180.png?text=Book+Title+3" alt="Business Card 3">
+        <img src="../assets/card1.png" alt="Business Card 1">
+        <img src="../assets/card2.png" alt="Business Card 2">
       </div>
     </section>
   </div>
@@ -88,7 +85,7 @@ ul li {
   margin: 20px 0;
 }
 .img-container img {
-  max-width: 100%;
+  max-width: 65%;
   height: auto;
   margin: 10px;
 }

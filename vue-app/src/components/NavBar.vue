@@ -100,8 +100,8 @@ export default {
 @media (max-width: 480px) {
   .navbar {
     width: 100%; 
-    height: auto; 
-    flex-direction: row; 
+    height: 30vh; 
+    flex-direction:column; 
     align-items: center; 
     justify-content: space-between; 
   }

@@ -1,18 +1,46 @@
 <script>
+import { useVuelidate } from '@vuelidate/core'
+import { required, email, minLength, maxLength } from '@vuelidate/validators'
+
 export default {
+    setup() {
+        return {
+            v$: useVuelidate()
+        }
+    },
   data() {
     return {
-      email: "",
-      password: "",
+      formData: {
+        email: "",
+        password: "",
+      }
     };
   },
+  validations() {
+    return {
+        formData: {
+            email: {
+                required,
+                email,
+            },
+            password: {
+                required,
+                minLength: minLength(6),
+                maxLength: maxLength(10),
+            }
+        }
+    }
+  },
   methods: {
-    onLogin() {
-      if (this.password === null || '') {
-        alert("Make sure password is entered!");
+    async onLogin() {
+    const isValid = await this.v$.$validate();
+      if (!isValid) {
+        console.log(this.formData);
+        alert("Invalid data");
         return;
       }
-      alert("Login successful!");
+
+      console.log(this.formData, 'Valid data');
     },
   },
 };
@@ -21,15 +49,14 @@ export default {
 <template>
   <div class="login-page">
     <h1>Login</h1>
-    <form @submit.prevent="onRegister">
+    <form @submit.prevent="onLogin">
       <div class="form-group">
         <label for="email">Email</label>
         <input
           type="email"
           id="email"
-          v-model="email"
+          v-model="formData.email"
           placeholder="Enter your email"
-          required
         />
       </div>
       <div class="form-group">
@@ -37,9 +64,8 @@ export default {
         <input
           type="password"
           id="password"
-          v-model="password"
+          v-model="formData.password"
           placeholder="Enter your password"
-          required
         />
       </div>
       <button type="submit">Login</button>

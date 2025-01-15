@@ -1,19 +1,55 @@
 <script>
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, minLength, maxLength, alphaNum } from "@vuelidate/validators";
 export default {
-  data() {
+  setup() {
     return {
-      email: "",
-      password: "",
-      username: "",
+      v$: useVuelidate(),
     };
   },
+  data() {
+    return {
+      formData: {
+        email: "",
+        password: "",
+        username: "",
+      },
+    };
+  },
+  validations() {
+    return {
+        formData: {
+            email: {
+                required,
+                email,
+            },
+            password: {
+                required,
+                minLength: minLength(6),
+                maxLength: maxLength(10),
+                alphaNum,
+            },
+            username: {
+                required,
+                alphaNum,
+                minLength: minLength(3),
+                maxLength: maxLength(10),
+            }
+        }
+    }
+  },
   methods: {
-    onRegister() {
-      if (this.password === null || '') {
-        alert("Make sure password is entered!");
+    async onRegister() {
+    const isValid = await this.v$.$validate();
+      if (!isValid) {
+        console.log(this.formData);
+        
+        alert("Invalid data");
         return;
       }
-      alert("Registration successful!");
+
+      console.log(this.formData, 'Valid data');
+      
     },
   },
 };
@@ -28,9 +64,8 @@ export default {
         <input
           type="email"
           id="email"
-          v-model="email"
+          v-model="formData.email"
           placeholder="Enter your email"
-          required
         />
       </div>
       <div class="form-group">
@@ -38,9 +73,8 @@ export default {
         <input
           type="password"
           id="password"
-          v-model="password"
+          v-model="formData.password"
           placeholder="Enter your password"
-          required
         />
       </div>
       <div class="form-group">
@@ -48,9 +82,8 @@ export default {
         <input
           type="text"
           id="username"
-          v-model="username"
+          v-model="formData.username"
           placeholder="Choose username"
-          required
         />
       </div>
       <button type="submit">Register</button>
@@ -129,19 +162,19 @@ button:hover {
 }
 
 p {
-    text-align: center;
+  text-align: center;
 }
 
 .login {
-    color: #007bff;
-    text-align: center;
-    font-weight:700
+  color: #007bff;
+  text-align: center;
+  font-weight: 700;
 }
 
 .login:hover {
-    color: white;
-    background-color: #0056b3;
-    border: none;
+  color: white;
+  background-color: #0056b3;
+  border: none;
   border-radius: 4px;
   transition: background 0.3s;
 }

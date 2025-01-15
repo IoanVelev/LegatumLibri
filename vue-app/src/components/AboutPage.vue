@@ -11,7 +11,7 @@ export default {
 
     <section>
       <h2>About LegatumLibri</h2>
-      <p>Welcome to <strong>LegatumLibri</strong>, your ultimate destination for exploring and managing books like never before!</p>
+      
       <p>At <strong>LegatumLibri</strong>, we understand that every book holds the key to a new adventure, a fresh perspective, or a timeless lesson. Our mission is to provide you with an intuitive and engaging platform where you can easily discover, organize, and keep track of all the books that intrigue and inspire you.</p>
 
       <h2>Explore Books</h2>
@@ -58,13 +58,14 @@ header {
   text-align: center;
 }
 section {
-  margin: 20px;
-  padding: 20px;
+  display: grid;
+
+  padding: 10px;
   background-color: #fff;
   border-radius: 8px;
 }
 h1 {
-  color: #333;
+  color: #fff;
 }
 h2 {
   color: #555;
@@ -85,7 +86,7 @@ ul li {
   margin: 20px 0;
 }
 .img-container img {
-  max-width: 65%;
+  max-width: 45%;
   height: auto;
   margin: 10px;
 }

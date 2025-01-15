@@ -31,7 +31,7 @@ export default {
                 required: helpers.withMessage('Password is required!', required),
                 minLength: minLength(6),
                 maxLength: maxLength(10),
-                alphaNum,
+                alphaNum: helpers.withMessage('Password must be alpha-numeric', alphaNum),
             },
             username: {
                 required: helpers.withMessage('Username is required!', required),

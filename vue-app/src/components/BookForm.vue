@@ -75,10 +75,15 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
-      alert("Book submitted successfully!");
-      console.log("Book Details:", this.book);
-      // Add your submission logic here
+    async handleSubmit() {
+      const isValid = await this.v$.$validate();
+      
+      if (!isValid) {
+        alert("Invalid data");
+        return;
+      }
+      
+      this.$router.push('/');
     },
   },
 };

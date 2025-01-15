@@ -55,6 +55,7 @@ export default {
   height: 50vh;
   padding: 20px;
   display: grid;
+  justify-self: center;
   justify-content: center;
   background: #f9f9f9;
   border-radius: 8px;

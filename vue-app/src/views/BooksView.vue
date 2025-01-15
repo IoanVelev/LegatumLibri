@@ -16,6 +16,31 @@ export default {
                 <button>Read Description</button>
             </div>
         </div>
+        <div class="card">
+            <img src="https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD-L.jpg" alt="Harry Potter and the Sorcerer's Stone">
+            <div class="card-content">
+                <h3 class="card-title">Harry Potter and the Sorcerer's Stone</h3>
+                <p class="card-genre">Genre: Fantasy</p>
+                <button>Read Description</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD-L.jpg" alt="Harry Potter and the Sorcerer's Stone">
+            <div class="card-content">
+                <h3 class="card-title">Harry Potter and the Sorcerer's Stone</h3>
+                <p class="card-genre">Genre: Fantasy</p>
+                <button>Read Description</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD-L.jpg" alt="Harry Potter and the Sorcerer's Stone">
+            <div class="card-content">
+                <h3 class="card-title">Harry Potter and the Sorcerer's Stone</h3>
+                <p class="card-genre">Genre: Fantasy</p>
+                <button>Read Description</button>
+            </div>
+        </div>
+        
 
         <!-- Book Card 2 -->
         <div class="card">
@@ -70,13 +95,14 @@ export default {
 <style>
 section {
     font-family: Arial, sans-serif;       
-    display:flexbox;
+    display: flex;
     align-items: center;
     min-height: 50vh;
-    width: 800px;
+    width: 1500px;
 }
         .card-container {
             display: flex;
+            justify-content: center;
             gap: 20px;
             margin-top: 20px;
             flex-wrap: wrap;

@@ -9,9 +9,8 @@ export default {
 </script>
 
 <template>
-  <header>
     <NavBar></NavBar>
-  </header>
+  
   <main>
     <router-view/>
   </main>
@@ -22,5 +21,7 @@ header {
   padding-top: 60px; /* Adjust for navbar height */
 }
 
-
+main {
+  width: 1500px;
+}
 </style>

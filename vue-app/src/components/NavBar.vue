@@ -14,6 +14,10 @@ export default {
       <!-- Navigation Links -->
       <ul class="nav-links">
         <li><RouterLink to="/">Home</RouterLink></li>
+        <li><RouterLink to="/register">Register</RouterLink></li>
+        <li><RouterLink to="/login">Login</RouterLink></li>
+        <li><RouterLink to="/wishlist">Wishlist</RouterLink></li>
+        <li><RouterLink to="/favourites">Favourites</RouterLink></li>
         <li><RouterLink to="/about">About</RouterLink></li>
       </ul>
     </div>

@@ -22,9 +22,5 @@ header {
   padding-top: 60px; /* Adjust for navbar height */
 }
 
-.wrapper {
-  width: 1000px;
-  display: grid;
-  gap: 2rem;
-}
+
 </style>

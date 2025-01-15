@@ -54,6 +54,9 @@ export default {
         />
       </div>
       <button type="submit">Register</button>
+
+      <p>Already have an account?</p>
+      <router-link to="/login" class="login">Sign in</router-link>
     </form>
   </div>
 </template>
@@ -123,6 +126,24 @@ button {
 
 button:hover {
   background: #0056b3;
+}
+
+p {
+    text-align: center;
+}
+
+.login {
+    color: #007bff;
+    text-align: center;
+    font-weight:700
+}
+
+.login:hover {
+    color: white;
+    background-color: #0056b3;
+    border: none;
+  border-radius: 4px;
+  transition: background 0.3s;
 }
 
 @media (max-width: 768px) {

@@ -43,7 +43,7 @@ export default {
         />
       </div>
       <button type="submit">Login</button>
-      <p>Dont have an account?</p>
+      <p>Don't have an account?</p>
       <router-link to="/register" class="register">Sign up</router-link>
     </form>
   </div>

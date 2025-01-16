@@ -2,6 +2,9 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength, maxLength, alphaNum, helpers } from "@vuelidate/validators";
 import ErrorMessage from "./ErrorMessage.vue";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "@/firebaseConfig";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 export default {
     components: {
         ErrorMessage,
@@ -18,6 +21,7 @@ export default {
         password: "",
         username: "",
       },
+      errorMsg: ""
     };
   },
   validations() {
@@ -46,14 +50,24 @@ export default {
     async onRegister() {
     const isValid = await this.v$.$validate();
       if (!isValid) {
-        console.log(this.formData);
-        
-        alert("Invalid data");
         return;
       }
 
-      console.log(this.formData, 'Valid data');
-      
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, this.formData.email, this.formData.password);
+        const user = userCredential.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+          username: this.formData.username,
+          email: this.formData.email,
+          createdAt: Timestamp.now(),
+        });
+
+        this.$router.push('/login');
+      } catch (error) {
+        this.errorMsg = error.message;
+        console.error("Error registering user:", error.message);
+      }
     },
   },
 };
@@ -99,6 +113,7 @@ export default {
       </div>
       <button type="submit">Register</button>
 
+      <p v-if="errorMsg" class="error-message">{{ errorMsg }}</p>
       <p>Already have an account?</p>
       <router-link to="/login" class="login">Sign in</router-link>
     </form>
@@ -172,6 +187,12 @@ button:hover {
   background: #0056b3;
 }
 
+.error-message {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+}
+
 p {
   text-align: center;
 }
@@ -189,6 +210,8 @@ p {
   border-radius: 4px;
   transition: background 0.3s;
 }
+
+
 
 @media (max-width: 768px) {
   .register-page {

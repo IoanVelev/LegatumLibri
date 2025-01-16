@@ -3,11 +3,19 @@ import { isLoggedIn } from "@/firebaseConfig";
 import { getAuth, signOut } from "firebase/auth";
 
 export default {
+  data() {
+    return {
+      isLogged: isLoggedIn(),
+    }
+  },
   methods: {
     async onLogout() {
       try {
         const auth = getAuth();
         await signOut(auth);
+        this.isLogged = isLoggedIn();
+        console.log(this.isLogged);
+        
         console.log("User logged out successfully.");
       } catch (error) {
         console.error("Error logging out:", error);
@@ -28,12 +36,12 @@ export default {
       <!-- Navigation Links -->
       <ul class="nav-links">
         <li><RouterLink to="/">Home</RouterLink></li>
-        <li v-if="!isLoggedIn"><RouterLink to="/register">Register</RouterLink></li>
-        <li v-if="!isLoggedIn"><RouterLink to="/login">Login</RouterLink></li>
-        <li v-if="isLoggedIn"><RouterLink to="/create">Create a book card</RouterLink></li>
-        <li v-if="isLoggedIn"><RouterLink to="/wishlist">Wishlist</RouterLink></li>
-        <li v-if="isLoggedIn"><RouterLink to="/favourites">Favourites</RouterLink></li>
-        <li v-if="isLoggedIn" @click="onLogout"><RouterLink to="/logout">Logout</RouterLink></li>
+        <li v-if="!isLogged"><RouterLink to="/register">Register</RouterLink></li>
+        <li v-if="!isLogged"><RouterLink to="/login">Login</RouterLink></li>
+        <li v-if="isLogged"><RouterLink to="/create">Create a book card</RouterLink></li>
+        <li v-if="isLogged"><RouterLink to="/wishlist">Wishlist</RouterLink></li>
+        <li v-if="isLogged"><RouterLink to="/favourites">Favourites</RouterLink></li>
+        <li v-if="isLogged" @click="onLogout"><RouterLink to="/logout">Logout</RouterLink></li>
         <li><RouterLink to="/about">About</RouterLink></li>
       </ul>
     </div>

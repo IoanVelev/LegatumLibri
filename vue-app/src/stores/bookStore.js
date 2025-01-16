@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { db } from '@/firebaseConfig';
 import { doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
-import { removeBookFromWishlist } from '@/services/bookService';
+import { addBookToFavourites, fetchFavBooks, removeBookFromFavourites, removeBookFromWishlist } from '@/services/bookService';
 
 export const useWishlistStore = defineStore('wishlist', {
   state: () => ({
@@ -36,3 +36,49 @@ export const useWishlistStore = defineStore('wishlist', {
       },
   },
 });
+
+export const useFavouritesStore = defineStore("favourites", {
+    state: () => ({
+      favouriteBooks: [],
+    }),
+    actions: {
+        async addToFavourites(userId, book) {
+            try {
+              await addBookToFavourites(userId, book); // Call service to add book to favourites
+              console.log("Book added to favourites!");
+              await this.fetchFavouriteBooks(userId); // Refresh after adding
+            } catch (error) {
+              console.error("Error adding book to favourites:", error);
+            }
+          },
+          async fetchFavouriteBooks(userId) {
+            try {
+              const favsRef = doc(db, 'users', userId, 'favourites', 'favouriteBooks');
+
+              const snapshot = await getDoc(favsRef);
+
+              if (snapshot.exists()) {
+                const data = snapshot.data();
+                
+                
+                this.favouriteBooks = data.books || [];
+                console.log(this.favouriteBooks, 'BOOKS DATA');
+              } else {
+                console.log('No wishlist found for this user.');
+                this.favouriteBooks = [];
+              }
+            } catch (error) {
+              console.error("Error fetching favourite books:", error);
+            }
+          },
+          async removeFromFavourites(userId, bookId) {
+            try {
+              await removeBookFromFavourites(userId, bookId); // Call service to remove book
+              console.log("Book removed from favourites!");
+              await this.fetchFavouriteBooks(userId); // Refresh after removal
+            } catch (error) {
+              console.error("Error removing book from favourites:", error);
+            }
+          },
+    },
+  });

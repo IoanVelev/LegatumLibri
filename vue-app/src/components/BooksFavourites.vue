@@ -1,5 +1,6 @@
 <script>
 import { db } from '@/firebaseConfig';
+import { useFavouritesStore } from '@/stores/bookStore';
 import { getAuth } from 'firebase/auth';
 export default {
   data() {
@@ -11,19 +12,19 @@ export default {
     const auth = getAuth();
     const user = auth.currentUser;
 
+    const store = useFavouritesStore();
+    
     if (user) {
-      this.fetchFavouriteBooks(user.uid);
+      store.fetchFavouriteBooks(user.uid);
     }
   },
-  methods: {
-    async fetchFavouriteBooks(userId) {
-      try {
-        const snapshot = await db.collection('favourites').where('userId', '==', userId).get();
-        this.favouriteBooks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      } catch (error) {
-        console.error('Error fetching favourite books:', error);
-      }
+  computed: {
+    favBooks() {
+      const store = useFavouritesStore();
+      return store.favouriteBooks;
     },
+  },
+  methods: {
     goToBookDetails(bookId) {
       this.$router.push(`/books/${bookId}`);
     },
@@ -36,8 +37,8 @@ export default {
     <header>
       <h1>Your Favourites</h1>
     </header>
-    <div class="card-container" v-if="favouriteBooks.length">
-      <div class="card" v-for="book in favouriteBooks" :key="book.id">
+    <div class="card-container" v-if="favBooks.length">
+      <div class="card" v-for="book in favBooks" :key="book.id">
         <img :src="book.imageUrl" :alt="book.title" />
         <div class="card-content">
           <h3 class="card-title">{{ book.title }}</h3>
@@ -53,7 +54,7 @@ export default {
 <style scoped>
 .favourites {
   font-family: Arial, sans-serif;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 20px auto;
   padding: 20px;
   border: 1px solid #ddd;
@@ -74,6 +75,7 @@ header {
 }
 
 .card {
+  width: 200px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -84,7 +86,7 @@ header {
 .card img {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit:contain
 }
 
 .card-content {

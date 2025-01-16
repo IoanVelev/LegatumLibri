@@ -1,8 +1,8 @@
 <script>
 import { db } from '@/firebaseConfig';
-import { addBookToWishlist } from '@/services/bookService';
+import { addBookToFavourites, addBookToWishlist } from '@/services/bookService';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 export default {
   data() {
@@ -11,6 +11,7 @@ export default {
       loading: true,
       errorMsg: "",
       user: null,
+      userId: '',
     }
   },
   async created() {
@@ -67,14 +68,20 @@ export default {
         this.errorMsg = 'User is not authenticated'
       }
     },
-    addBookToFavourites() {
-      if (!this.book.id) {
+    async addFavourites() {
+      try {
+        if (this.user) {
+        if (!this.book.id) {
         this.book = { ...this.book, id: this.$route.params.id };
       }
-      
-      console.log(this.user.uid, this.book);
-      
-      //addToFavourites(this.user.uid, this.book);
+      addBookToFavourites(this.user.uid, this.book);
+      } else {
+        alert('User is not authenticated');
+        this.errorMsg = 'User is not authenticated'
+      }
+      } catch (error) {
+        console.error("Error adding book to favourites:", error);
+      }
     },
   },
 };
@@ -106,7 +113,7 @@ export default {
       <button @click="editBook" class="edit-btn">✎ Edit</button>
       <button @click="deleteBook" class="delete-btn">🗑 Delete</button>
       <button @click="addToWishlist" class="wishlist-btn">❤️ Add to Wishlist</button>
-      <button @click="addBookToFavourites" class="favourites-btn">⭐ Add to Favourites</button>
+      <button @click="addFavourites" class="favourites-btn">⭐ Add to Favourites</button>
     </footer>
   </div>
 </template>

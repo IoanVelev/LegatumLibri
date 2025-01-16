@@ -21,7 +21,7 @@ export default {
     if (user) {
       this.userId = user.uid;
       const store = useWishlistStore();
-      await store.fetchWishlistBooks(this.userId); // Fetch user's wishlist
+      store.fetchWishlistBooks(this.userId); // Fetch user's wishlist
     } else {
       console.log('No user logged in.');
     }

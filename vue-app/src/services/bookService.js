@@ -1,25 +1,36 @@
-// src/services/bookService.js
-import { db } from '../firebase'; // Assuming you have initialized Firebase in this file
-import { collection, addDoc, doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { collection, addDoc, doc, setDoc, getDoc, arrayUnion } from "firebase/firestore";
 
-export const addToWishlist = async (userId, book) => {
+export const addBookToWishlist = async (userId, book) => {
   try {
-    const wishlistRef = collection(db, "users", userId, "wishlist");
-    const bookRef = doc(wishlistRef, book.id); // Using the book ID as the document ID
-    await setDoc(bookRef, book); // Adds the book to the wishlist
+    // Check if the book object is valid
+    if (!book || !book.id) {
+      throw new Error("Invalid book object. Book ID is required.");
+    }
+
+    console.log("Adding book to wishlist:", book);
+    //console.log(userId);
+    // Reference to the user's wishlist document
+    const wishlistRef = doc(db, "users", userId, "wishlist", "userWishlist");
+   
+    
+    console.log(wishlistRef);
+    
+
+    // Add the book to the array of books in the 'wishlist' field of the document
+    await setDoc(
+      wishlistRef,
+      {
+        books: arrayUnion(book),
+      },
+      { merge: true }
+    );
+
     console.log("Book added to wishlist successfully!");
   } catch (error) {
     console.error("Error adding book to wishlist:", error);
   }
 };
 
-export const addToFavourites = async (userId, book) => {
-  try {
-    const favouritesRef = collection(db, "users", userId, "favourites");
-    const bookRef = doc(favouritesRef, book.id); // Using the book ID as the document ID
-    await setDoc(bookRef, book); // Adds the book to favourites
-    console.log("Book added to favourites successfully!");
-  } catch (error) {
-    console.error("Error adding book to favourites:", error);
-  }
-};
+
+

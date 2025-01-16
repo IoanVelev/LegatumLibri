@@ -1,6 +1,6 @@
 <script>
 import { db } from '@/firebaseConfig';
-import { useWishlistStore } from '@/stores/bookStore';
+import { addBookToWishlist } from '@/services/bookService';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -57,21 +57,24 @@ export default {
       console.log("Implement TTS functionality here.");
     },
     async addToWishlist() {
-      const bookstore = useWishlistStore();
       if (this.user) {
-        console.log(this.user);
-        
-        
-        
-        bookstore.addToWishlist(this.user.uid, this.book);
+        if (!this.book.id) {
+        this.book = { ...this.book, id: this.$route.params.id };
+      }
+      addBookToWishlist(this.user.uid, this.book);
       } else {
         alert('User is not authenticated');
         this.errorMsg = 'User is not authenticated'
       }
     },
     addBookToFavourites() {
-      const bookStore = useWishlistStore();
-      bookStore.addToFavourites(this.book, this.user.uid);
+      if (!this.book.id) {
+        this.book = { ...this.book, id: this.$route.params.id };
+      }
+      
+      console.log(this.user.uid, this.book);
+      
+      //addToFavourites(this.user.uid, this.book);
     },
   },
 };
@@ -103,7 +106,7 @@ export default {
       <button @click="editBook" class="edit-btn">✎ Edit</button>
       <button @click="deleteBook" class="delete-btn">🗑 Delete</button>
       <button @click="addToWishlist" class="wishlist-btn">❤️ Add to Wishlist</button>
-      <button @click="addToFavourites" class="favourites-btn">⭐ Add to Favourites</button>
+      <button @click="addBookToFavourites" class="favourites-btn">⭐ Add to Favourites</button>
     </footer>
   </div>
 </template>

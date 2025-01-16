@@ -1,9 +1,6 @@
 <script>
 import { db } from '@/firebaseConfig';
 import { getAuth } from 'firebase/auth';
-
-
-
 export default {
   data() {
     return {

@@ -1,8 +1,12 @@
 <script>
 import { useVuelidate } from '@vuelidate/core'
-import { required, email, minLength, maxLength } from '@vuelidate/validators'
+import { required, email, minLength, maxLength, helpers } from '@vuelidate/validators'
+import ErrorMessage from './ErrorMessage.vue';
 
 export default {
+  components: {
+        ErrorMessage,
+    },
     setup() {
         return {
             v$: useVuelidate()
@@ -20,11 +24,11 @@ export default {
     return {
         formData: {
             email: {
-                required,
+                required: helpers.withMessage('Email is required!', required),
                 email,
             },
             password: {
-                required,
+                required: helpers.withMessage('Password is required!', required),
                 minLength: minLength(6),
                 maxLength: maxLength(10),
             }
@@ -57,7 +61,9 @@ export default {
           id="email"
           v-model="formData.email"
           placeholder="Enter your email"
+          @blur="v$.formData.email.$touch"
         />
+        <ErrorMessage :errors="v$.formData.email.$errors"></ErrorMessage>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
@@ -66,7 +72,9 @@ export default {
           id="password"
           v-model="formData.password"
           placeholder="Enter your password"
+          @blur="v$.formData.password.$touch"
         />
+        <ErrorMessage :errors="v$.formData.password.$errors"></ErrorMessage>
       </div>
       <button type="submit">Login</button>
       <p>Don't have an account?</p>

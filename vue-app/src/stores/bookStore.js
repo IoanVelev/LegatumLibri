@@ -1,48 +1,51 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
 import { db } from '@/firebaseConfig';
-import { collection, addDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
 
-export const useBookStore = defineStore('bookStore', () => {
-  const wishlist = ref([]);
-  const favourites = ref([]);
+export const useWishlistStore = defineStore('wishlist', {
+  state: () => ({
+    wishlistBooks: [],
+  }),
+  actions: {
+    async addToWishlist(userId, book) {
+      try {
+        // Reference to the user's wishlist document
+        const wishlistRef = doc(db, 'wishlist', userId);
+        
+        // Add the book to the array of books
+        await setDoc(
+          wishlistRef,
+          {
+            books: arrayUnion(book),
+          },
+          { merge: true }
+        );
 
-  // Function to add a book to the wishlist
-  const addToWishlist = async (book, userId) => {
-    try {
-      await addDoc(collection(db, 'users', userId, 'wishlist'), {
-        title: book.title,
-        genre: book.genre,
-        author: book.author,
-        description: book.description,
-        imageUrl: book.imageUrl,
-      });
-      wishlist.value.push(book); // Update local wishlist
-    } catch (error) {
-      console.error('Error adding book to wishlist:', error);
-    }
-  };
+        console.log('Book added to wishlist successfully!');
+      } catch (error) {
+        console.error('Error adding book to wishlist:', error);
+      }
+    },
+    async fetchWishlistBooks(userId) {
+      try {
+        // Reference to the user's wishlist document
+        const wishlistRef = doc(db, 'wishlist', userId);
 
-  // Function to add a book to the favourites
-  const addToFavourites = async (book, userId) => {
-    try {
-      await addDoc(collection(db, 'users', userId, 'favourites'), {
-        title: book.title,
-        genre: book.genre,
-        author: book.author,
-        description: book.description,
-        imageUrl: book.imageUrl,
-      });
-      favourites.value.push(book); // Update local favourites
-    } catch (error) {
-      console.error('Error adding book to favourites:', error);
-    }
-  };
+        // Fetch the document data
+        const snapshot = await getDoc(wishlistRef);
 
-  return {
-    wishlist,
-    favourites,
-    addToWishlist,
-    addToFavourites,
-  };
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          this.wishlistBooks = data.books || [];
+        } else {
+          console.log('No wishlist found for this user.');
+          this.wishlistBooks = [];
+        }
+      } catch (error) {
+        console.error('Error fetching wishlist books:', error);
+      }
+    },
+  },
 });
+
+

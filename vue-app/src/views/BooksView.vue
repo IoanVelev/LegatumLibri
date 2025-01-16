@@ -13,7 +13,7 @@ export default {
             <div class="card-content">
                 <h3 class="card-title">Harry Potter and the Sorcerer's Stone</h3>
                 <p class="card-genre">Genre: Fantasy</p>
-                <button>Read Description</button>
+                <button><RouterLink to="/book/:id" class="buttonLink">Description</RouterLink></button>
             </div>
         </div>
         <div class="card">
@@ -154,6 +154,16 @@ section {
         }
         .card button:hover {
             background: #0056b3;
+        }
+
+        .buttonLink {
+            color: #fff;
+            transition: background 0.2s;
+        }
+
+        .buttonLink:hover {
+            background: #0056b3;
+            
         }
 
         @media (max-width: 768px) {

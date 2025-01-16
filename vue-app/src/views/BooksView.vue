@@ -1,6 +1,34 @@
 <script>
-export default {
+import { db } from '@/firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
 
+export default {
+data() {
+    return {
+        books: [],
+        loading: true,
+        errorMsg: ""
+    }
+},
+async created() {
+    await this.fetchBooks();
+},
+
+methods: {
+    async fetchBooks() {
+        const bookRef = collection(db, "books");
+
+        try {
+            const querySnapshot = await getDocs(bookRef);
+
+            this.books = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
+            this.loading = false;
+        } catch (error) {
+            this.errorMsg = error.message;
+            this.loading = false;
+        }
+    }
+}
 }
 </script>
 
@@ -8,83 +36,12 @@ export default {
     <section>
         <div class="card-container">
         <!-- Book Card 1 -->
-        <div class="card">
-            <img src="https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD-L.jpg" alt="Harry Potter and the Sorcerer's Stone">
+        <div class="card" v-for="book in books" :key="book.id">
+            <img :src="book.imageUrl" :alt="book.title">
             <div class="card-content">
-                <h3 class="card-title">Harry Potter and the Sorcerer's Stone</h3>
-                <p class="card-genre">Genre: Fantasy</p>
+                <h3 class="card-title">{{ book.title }}</h3>
+                <p class="card-genre">Genre: {{ book.genre }}</p>
                 <button><RouterLink to="/book/:id" class="buttonLink">Description</RouterLink></button>
-            </div>
-        </div>
-        <div class="card">
-            <img src="https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD-L.jpg" alt="Harry Potter and the Sorcerer's Stone">
-            <div class="card-content">
-                <h3 class="card-title">Harry Potter and the Sorcerer's Stone</h3>
-                <p class="card-genre">Genre: Fantasy</p>
-                <button>Read Description</button>
-            </div>
-        </div>
-        <div class="card">
-            <img src="https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD-L.jpg" alt="Harry Potter and the Sorcerer's Stone">
-            <div class="card-content">
-                <h3 class="card-title">Harry Potter and the Sorcerer's Stone</h3>
-                <p class="card-genre">Genre: Fantasy</p>
-                <button>Read Description</button>
-            </div>
-        </div>
-        <div class="card">
-            <img src="https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD-L.jpg" alt="Harry Potter and the Sorcerer's Stone">
-            <div class="card-content">
-                <h3 class="card-title">Harry Potter and the Sorcerer's Stone</h3>
-                <p class="card-genre">Genre: Fantasy</p>
-                <button>Read Description</button>
-            </div>
-        </div>
-        
-
-        <!-- Book Card 2 -->
-        <div class="card">
-            <img src="https://images-na.ssl-images-amazon.com/images/I/91cwOSS4sDL.jpg" alt="To Kill a Mockingbird">
-            <div class="card-content">
-                <h3 class="card-title">To Kill a Mockingbird</h3>
-                <p class="card-genre">Genre: Classic Fiction</p>
-                <button>Read Description</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images-na.ssl-images-amazon.com/images/I/91cwOSS4sDL.jpg" alt="To Kill a Mockingbird">
-            <div class="card-content">
-                <h3 class="card-title">To Kill a Mockingbird</h3>
-                <p class="card-genre">Genre: Classic Fiction</p>
-                <button>Read Description</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images-na.ssl-images-amazon.com/images/I/91cwOSS4sDL.jpg" alt="To Kill a Mockingbird">
-            <div class="card-content">
-                <h3 class="card-title">To Kill a Mockingbird</h3>
-                <p class="card-genre">Genre: Classic Fiction</p>
-                <button>Read Description</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images-na.ssl-images-amazon.com/images/I/91cwOSS4sDL.jpg" alt="To Kill a Mockingbird">
-            <div class="card-content">
-                <h3 class="card-title">To Kill a Mockingbird</h3>
-                <p class="card-genre">Genre: Classic Fiction</p>
-                <button>Read Description</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images-na.ssl-images-amazon.com/images/I/91cwOSS4sDL.jpg" alt="To Kill a Mockingbird">
-            <div class="card-content">
-                <h3 class="card-title">To Kill a Mockingbird</h3>
-                <p class="card-genre">Genre: Classic Fiction</p>
-                <button>Read Description</button>
             </div>
         </div>
     </div>

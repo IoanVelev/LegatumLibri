@@ -67,10 +67,13 @@ export default {
         <p><strong>Description:</strong> {{ book.description }}</p> <!--book.description-->
       </div>
     </section>
+
     <footer>
       <button @click="readAloud" class="tts-btn">🔊 Read Description</button>
       <button @click="editBook" class="edit-btn">✎ Edit</button>
       <button @click="deleteBook" class="delete-btn">🗑 Delete</button>
+      <button @click="addToWishlist" class="wishlist-btn">❤️ Add to Wishlist</button>
+      <button @click="addToFavourites" class="favourites-btn">⭐ Add to Favourites</button>
     </footer>
   </div>
 </template>
@@ -169,7 +172,9 @@ footer {
 }
 
 .edit-btn,
-.delete-btn {
+.delete-btn,
+.wishlist-btn,
+.favourites-btn {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -181,7 +186,9 @@ footer {
   transition: background-color 0.3s;
 }
 
-.edit-btn:hover {
+.edit-btn:hover,
+.wishlist-btn:hover,
+.favourites-btn:hover {
   background-color: #0056b3;
 }
 
@@ -191,5 +198,23 @@ footer {
 
 .delete-btn:hover {
   background-color: #a71d2a;
+}
+
+
+
+.wishlist-btn {
+  background-color: #28a745;
+}
+
+.wishlist-btn:hover {
+  background-color: #218838;
+}
+
+.favourites-btn {
+  background-color: #ffc107;
+}
+
+.favourites-btn:hover {
+  background-color: #e0a800;
 }
 </style>

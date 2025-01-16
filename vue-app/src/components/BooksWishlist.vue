@@ -21,11 +21,20 @@ export default {
     if (user) {
       this.userId = user.uid;
       const store = useWishlistStore();
-      store.fetchWishlistBooks(this.userId); // Fetch user's wishlist
+      store.fetchWishlistBooks(this.userId);
     } else {
       console.log('No user logged in.');
     }
   },
+  methods: {
+    navigateToBook(bookId) {
+      this.$router.push(`/book/${bookId}`)
+    },
+    async removeFromWishlist(bookId) {
+      const store = useWishlistStore();
+      await store.removeFromWishlist(this.userId, bookId);
+    }
+  }
 };
 </script>
 
@@ -38,7 +47,11 @@ export default {
         <div class="wishlist-card-content">
           <h2 class="wishlist-card-title">{{ book.title }}</h2>
           <p class="wishlist-card-genre"><strong>Genre:</strong> {{ book.genre }}</p>
-          <button @click="navigateToBook(book.id)" class="wishlist-card-button">View Details</button>
+          <div class="wishlist-card-buttons">
+            <button @click="navigateToBook(book.id)" class="wishlist-card-button">View Details</button>
+            <button @click="removeFromWishlist(book.id)" class="remove-button">Remove from Wishlist</button>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -47,7 +60,6 @@ export default {
 </template>
 
 <style scoped>
-/* Container */
 .wishlist-container {
   font-family: Arial, sans-serif;
   max-width: 800px;
@@ -59,7 +71,7 @@ export default {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Header */
+
 .wishlist-header {
   font-size: 2rem;
   color: #333;
@@ -67,7 +79,7 @@ export default {
   margin-bottom: 20px;
 }
 
-/* Grid Layout */
+
 .wishlist-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -75,7 +87,7 @@ export default {
   padding: 10px;
 }
 
-/* Card Styles */
+
 .wishlist-card {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -90,17 +102,17 @@ export default {
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Card Image */
 .wishlist-card-image {
   width: 100%;
   height: 200px;
   object-fit:contain
 }
 
-/* Card Content */
 .wishlist-card-content {
+  margin-top: auto;
   padding: 15px;
   text-align: center;
+  height: 200px;
 }
 
 .wishlist-card-title {
@@ -116,7 +128,6 @@ export default {
   margin-bottom: 15px;
 }
 
-/* Button Styles */
 .wishlist-card-button {
   background-color: #007bff;
   color: #fff;
@@ -128,8 +139,26 @@ export default {
   transition: background-color 0.3s ease;
 }
 
+.wishlist-card-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px; 
+  margin-top: auto;
+}
+
 .wishlist-card-button:hover {
   background-color: #0056b3;
+}
+
+.remove-button {
+  background-color:red;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 /* No Books Message */

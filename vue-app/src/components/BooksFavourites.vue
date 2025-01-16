@@ -22,11 +22,13 @@ export default {
     favBooks() {
       const store = useFavouritesStore();
       return store.favouriteBooks;
+      
+      
     },
   },
   methods: {
     goToBookDetails(bookId) {
-      this.$router.push(`/books/${bookId}`);
+      this.$router.push(`/book/${bookId}`);
     },
   },
 };

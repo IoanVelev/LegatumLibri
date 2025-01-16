@@ -1,5 +1,5 @@
 <script>
-import { db } from "@/firebaseConfig";
+import { db, isLoggedIn } from "@/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 
 export default {
@@ -49,7 +49,7 @@ export default {
         <div class="card-content">
           <h3 class="card-title">{{ book.title }}</h3>
           <p class="card-genre">Genre: {{ book.genre }}</p>
-          <button class="buttonLink" @click="navigateToBook(book.id)">
+          <button v-if="isLoggedIn" class="buttonLink" @click="navigateToBook(book.id)">
             Description
           </button>
         </div>

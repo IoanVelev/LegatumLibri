@@ -62,9 +62,8 @@ export const useFavouritesStore = defineStore("favourites", {
                 
                 
                 this.favouriteBooks = data.books || [];
-                console.log(this.favouriteBooks, 'BOOKS DATA');
               } else {
-                console.log('No wishlist found for this user.');
+                console.log('No favourites found for this user.');
                 this.favouriteBooks = [];
               }
             } catch (error) {

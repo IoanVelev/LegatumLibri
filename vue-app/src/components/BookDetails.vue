@@ -1,12 +1,41 @@
 <script>
+import { db } from '@/firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
+
 export default {
-  props: {
-    book: {
-      type: Object,
-      required: true,
-    },
+  data() {
+    return {
+      book: null,
+      loading: true,
+      errorMsg: "",
+    }
+  },
+  async created() {
+    await this.fetchBookDetails();
   },
   methods: {
+    async fetchBookDetails() {
+      const bookId = this.$route.params.id;
+      console.log(bookId);
+      
+      try {
+        const docRef = doc(db, "books", bookId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          this.book = docSnap.data();
+          console.log(this.book);
+          
+        } else {
+          this.errorMsg = 'No such book found';
+        }
+      } catch (error) {
+        this.errorMsg = 'Failed to load book details.'
+      }
+      finally {
+        this.loading = false;
+      }
+    },
     navigateBack() {
       this.$router.push('/'); // Navigate back to the homepage or books list
     },
@@ -25,17 +54,17 @@ export default {
       <button @click="navigateBack" class="back-btn">← Back</button>
       
     </header>
-    <section class="book-info">
+    <section class="book-info" v-if="book">
       <div class="image-container">
        
         <!--book.imageUrl-->
-        <img src="https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD-L.jpg" :alt="img" /> <!--book.title-->
+        <img :src="book.imageUrl" :alt="book.title" /> <!--book.title-->
       </div>
       <div class="details">
-        <h2>{{ "Harry Potter" }}</h2> <!--book.title-->
-        <p><strong>Genre:</strong> {{ "Fantasy" }}</p> <!--book.genre-->
-        <p><strong>Author:</strong> {{ "JK. Rowling" }}</p> <!--book.author-->
-        <p><strong>Description:</strong> {{ "One of the best books" }}</p> <!--book.description-->
+        <h2>{{ book.title }}</h2> <!--book.title-->
+        <p><strong>Genre:</strong> {{ book.genre }}</p> <!--book.genre-->
+        <p><strong>Author:</strong> {{ book.author }}</p> <!--book.author-->
+        <p><strong>Description:</strong> {{ book.description }}</p> <!--book.description-->
       </div>
     </section>
     <footer>

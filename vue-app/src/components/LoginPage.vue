@@ -2,6 +2,8 @@
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, minLength, maxLength, helpers } from '@vuelidate/validators'
 import ErrorMessage from './ErrorMessage.vue';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/firebaseConfig';
 
 export default {
   components: {
@@ -17,7 +19,8 @@ export default {
       formData: {
         email: "",
         password: "",
-      }
+      },
+      errorMsg: "",
     };
   },
   validations() {
@@ -39,12 +42,16 @@ export default {
     async onLogin() {
     const isValid = await this.v$.$validate();
       if (!isValid) {
-        console.log(this.formData);
-        alert("Invalid data");
         return;
       }
 
-      console.log(this.formData, 'Valid data');
+      try {
+        await signInWithEmailAndPassword(auth, this.formData.email, this.formData.password);
+
+        this.$router.push('/');
+      } catch (error) {
+        this.errorMsg = error.message;
+      }
     },
   },
 };
@@ -76,6 +83,8 @@ export default {
         />
         <ErrorMessage :errors="v$.formData.password.$errors"></ErrorMessage>
       </div>
+      <p v-if="errorMsg" class="error-message">{{ errorMsg }}</p>
+
       <button type="submit">Login</button>
       <p>Don't have an account?</p>
       <router-link to="/register" class="register">Sign up</router-link>
@@ -151,6 +160,12 @@ button {
 
 button:hover {
   background: #0056b3;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  text-align: center;
 }
 
 p {

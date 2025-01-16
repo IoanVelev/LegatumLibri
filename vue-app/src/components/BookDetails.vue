@@ -1,6 +1,7 @@
 <script>
-import { auth, db } from '@/firebaseConfig';
-import { useBookStore } from '@/stores/bookStore';
+import { db } from '@/firebaseConfig';
+import { useWishlistStore } from '@/stores/bookStore';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
 export default {
@@ -9,21 +10,25 @@ export default {
       book: null,
       loading: true,
       errorMsg: "",
-      userId: null,
+      user: null,
     }
   },
   async created() {
     await this.fetchBookDetails();
-    const user = await auth.currentUser();
-
-    if (user) {
-      this.userId = user.uid;
-    } else {
-      alert('No user is currently authenticated');
-      this.userId = null;
-    }
+    this.setupAuthListener(); // Set up the auth state listener 
   },
   methods: {
+    setupAuthListener() {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.user = user; // Store the current user
+        } else {
+          this.user = null; // No user is logged in
+        }
+        
+      });
+    },
     async fetchBookDetails() {
       const bookId = this.$route.params.id;
       
@@ -45,27 +50,35 @@ export default {
       }
     },
     navigateBack() {
-      this.$router.push(-1); // Navigate back to the homepage or books list
+      this.$router.push('/'); // Navigate back to the homepage or books list
     },
     readAloud() {
       // Placeholder for TTS functionality
       console.log("Implement TTS functionality here.");
     },
     async addToWishlist() {
-      const bookstore = useBookStore();
+      const bookstore = useWishlistStore();
       if (this.user) {
-        bookstore.addToWishlist(this.book, this.userId);
+        console.log(this.user);
+        
+        
+        
+        bookstore.addToWishlist(this.user.uid, this.book);
       } else {
         alert('User is not authenticated');
         this.errorMsg = 'User is not authenticated'
       }
-    }
+    },
+    addBookToFavourites() {
+      const bookStore = useWishlistStore();
+      bookStore.addToFavourites(this.book, this.user.uid);
+    },
   },
 };
 </script>
 
 <template>
-  <div class="book-details">
+  <div class="book-details" v-if="user">
     <header>
         <h1>Book Details</h1>
       <button @click="navigateBack" class="back-btn">← Back</button>

@@ -49,7 +49,7 @@ export default {
         </div>
       </div>
     </div>
-    <p v-else>No books in your favourites yet.</p>
+    <p v-else class="no-books-message">Your favourite book list is empty. Start adding books!</p>
   </div>
 </template>
 
@@ -117,5 +117,12 @@ header {
 
 .button-link:hover {
   background-color: #0056b3;
+}
+
+.no-books-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+  margin-top: 30px;
 }
 </style>

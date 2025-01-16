@@ -1,4 +1,5 @@
 import AboutPage from '@/components/AboutPage.vue'
+import BookDetails from '@/components/BookDetails.vue';
 import BookForm from '@/components/BookForm.vue';
 import Home from '@/components/Home.vue'
 import LoginPage from '@/components/LoginPage.vue';
@@ -11,7 +12,8 @@ const routes = [
   { path: '/about', component: AboutPage },
   { path: '/register', component: RegisterPage },
   { path: '/login', component: LoginPage },
-  { path: '/create', component: BookForm }
+  { path: '/create', component: BookForm },
+  { path: '/book/:id', component: BookDetails }
 ]
 
 const router = createRouter({

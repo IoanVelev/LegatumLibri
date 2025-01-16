@@ -1,5 +1,6 @@
 <script>
-import { db } from '@/firebaseConfig';
+import { auth, db } from '@/firebaseConfig';
+import { useBookStore } from '@/stores/bookStore';
 import { doc, getDoc } from 'firebase/firestore';
 
 export default {
@@ -8,15 +9,23 @@ export default {
       book: null,
       loading: true,
       errorMsg: "",
+      userId: null,
     }
   },
   async created() {
     await this.fetchBookDetails();
+    const user = await auth.currentUser();
+
+    if (user) {
+      this.userId = user.uid;
+    } else {
+      alert('No user is currently authenticated');
+      this.userId = null;
+    }
   },
   methods: {
     async fetchBookDetails() {
       const bookId = this.$route.params.id;
-      console.log(bookId);
       
       try {
         const docRef = doc(db, "books", bookId);
@@ -24,7 +33,6 @@ export default {
 
         if (docSnap.exists()) {
           this.book = docSnap.data();
-          console.log(this.book);
           
         } else {
           this.errorMsg = 'No such book found';
@@ -37,12 +45,21 @@ export default {
       }
     },
     navigateBack() {
-      this.$router.push('/'); // Navigate back to the homepage or books list
+      this.$router.push(-1); // Navigate back to the homepage or books list
     },
     readAloud() {
       // Placeholder for TTS functionality
       console.log("Implement TTS functionality here.");
     },
+    async addToWishlist() {
+      const bookstore = useBookStore();
+      if (this.user) {
+        bookstore.addToWishlist(this.book, this.userId);
+      } else {
+        alert('User is not authenticated');
+        this.errorMsg = 'User is not authenticated'
+      }
+    }
   },
 };
 </script>
